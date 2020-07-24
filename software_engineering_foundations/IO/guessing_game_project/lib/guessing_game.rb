@@ -2,8 +2,7 @@ class GuessingGame
   attr_reader :num_attempts
 
   def initialize(min, max)
-    prng = Random.new
-    @secret_num = prng.rand(min..max)
+    @secret_num = rand(min..max)
     @num_attempts = 0
     @game_over = false
   end
