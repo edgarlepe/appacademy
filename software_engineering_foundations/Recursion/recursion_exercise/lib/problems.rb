@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+require 'pry'
+
 # Write a method, pow(base, exponent), that takes in two numbers.
 # The method should calculate the base raised to the exponent power.
 # You can assume the exponent is always positive.
@@ -12,9 +16,10 @@
 # pow(3, 4) # => 81
 # pow(4, 3) # => 64
 def pow(base, exponent)
+  return 1 if exponent.zero?
 
+  base * pow(base, exponent - 1)
 end
-
 
 # Write a method, lucas_number(n), that takes in a number.
 # The method should return the n-th number of the Lucas Sequence.
@@ -35,13 +40,18 @@ end
 # lucas_number(5)   # =>    11
 # lucas_number(9)   # =>    76
 def lucas_number(n)
-
+  if n.zero?
+    2
+  elsif n == 1
+    1
+  else
+    lucas_number(n - 1) + lucas_number(n - 2)
+  end
 end
-
 
 # Write a method, sum_array(array), that takes in an array of numbers.
 # The method should return the total sum of the elements.
-# 
+#
 # Solve this recursively!
 #
 # Examples:
@@ -51,9 +61,12 @@ end
 # sum_array([5, 2])         # => 7
 # sum_array([4, 10, -1, 2]) # => 15
 def sum_array(array)
-
+  if array == []
+    0
+  else
+    array.pop + sum_array(array)
+  end
 end
-
 
 # Write a method, reverse_string(str), that takes in a string.
 # The method should return the string with it's characters in reverse order.
@@ -61,21 +74,23 @@ end
 # Solve this recursively!
 #
 # Examples:
-# 
+#
 # reverse_string("")            # => ""
 # reverse_string("c")           # => "c"
 # reverse_string("internet")    # => "tenretni"
 # reverse_string("friends")     # => "sdneirf"
 def reverse_string(str)
+  return '' if str == ''
 
+  chars = str.chars
+  chars.pop + reverse_string(chars.join)
 end
-
 
 # A 1-dimensional array is also known as a flattened array.
 # Write a method, flatten(data), that accepts a single argument. The
 # method should take in an array of any dimension and return the flattened
 # version of that array. Solve this recursively.
-#   
+#
 # Hint:
 #  - if the argument is not an array, then we have reached the base case
 #  - look up the documentation for how to check if data is an array or not
@@ -100,5 +115,9 @@ end
 #     2-dimensional array: [['some data']]
 #     3-dimensional array: [[['some data']]]
 def flatten(data)
+  return [data] unless data.is_a? Array
+  return [] if data == []
 
+  first = data.shift
+  flatten(first) + flatten(data)
 end
